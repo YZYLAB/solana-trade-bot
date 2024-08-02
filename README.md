@@ -27,11 +27,15 @@ Includes two examples, one using HTTP requests and one using the more efficient 
 ## Installation
 
 1. Clone the repository:
-   git clone https://github.com/YZYLAB/solana-trading-bot.git
-   cd solana-trading-bot
+```bash
+git clone https://github.com/YZYLAB/solana-trading-bot.git
+cd solana-trading-bot
+```
 
 2. Install dependencies:
-   npm install
+```bash
+npm install
+```
 
 3. Rename the .env.example and configure the bot.
 
@@ -39,7 +43,15 @@ Includes two examples, one using HTTP requests and one using the more efficient 
 
 Run the bot with:
 
-node index.js
+```bash
+node index.js 
+```
+
+Or
+
+```bash
+node websocket.js
+```
 
 ## Configuration
 
