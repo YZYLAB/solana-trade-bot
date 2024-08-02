@@ -3,9 +3,9 @@
 A high-performance, automated trading bot for Solana tokens using the Solana Tracker API.
 Supports Raydium (V4/CPMM), Pumpfun, Moonshot, Orca and Jupiter.
 
-Includes two examples, one using HTTP requests and one using the Data Streams (Websockets) from Solana Tracker.
+Includes two examples, one using HTTP requests and one using the more efficient and faster Data Streams (Websockets) from Solana Tracker.
 
-[![Screenshot of the Trading Bot](https://i.gyazo.com/afb12f6c358385f133fa4b95dba3c095.png)]
+![Screenshot of the Trading Bot](https://i.gyazo.com/afb12f6c358385f133fa4b95dba3c095.png)
 
 ## Features
 
