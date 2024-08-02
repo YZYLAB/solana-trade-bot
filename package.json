@@ -1,0 +1,17 @@
+{
+  "name": "solana-volume-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chalk": "4.1.0",
+    "dotenv": "^16.4.5",
+    "solana-swap": "^1.1.2",
+    "winston": "^3.13.1"
+  }
+}
