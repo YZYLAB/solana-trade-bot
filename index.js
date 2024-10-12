@@ -8,9 +8,9 @@ const axios = require("axios");
 const fs = require("fs").promises;
 
 const session = axios.create({
-  baseURL: "https://solana.p.nadles.com/",
+  baseURL: "https://data.solanatracker.io/",
   timeout: 3500,
-  headers: { "X-Billing-Token": process.env.BILLING_TOKEN },
+  headers: { "x-api-key": process.env.API_KEY },
 });
 
 const sleep = (ms) => {
@@ -167,6 +167,7 @@ class TradingBot {
   }
 
   async performSwap(token, isBuy) {
+    if (isBuy) return
     logger.info(
       `${
         isBuy ? chalk.white("[BUYING]") : chalk.white("[SELLING]")

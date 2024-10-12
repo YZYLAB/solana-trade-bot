@@ -64,7 +64,7 @@ Adjust the settings in your `.env` file to customize the bot's behavior:
 - PRIORITY_FEE: Priority fee for transactions
 - JITO: Set to "true" to use Jito for transaction processing
 - RPC_URL: Your Solana RPC URL
-- BILLING_TOKEN: Your Solana Tracker API billing token
+- API_KEY: Your Solana Tracker - [Data API Key](https://www.solanatracker.io/data-api)
 - PRIVATE_KEY: Your wallet's private key
 - MIN_LIQUIDITY / MAX_LIQUIDITY: Liquidity range for token selection
 - MIN_MARKET_CAP / MAX_MARKET_CAP: Market cap range for token selection
