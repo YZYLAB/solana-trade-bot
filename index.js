@@ -167,7 +167,6 @@ class TradingBot {
   }
 
   async performSwap(token, isBuy) {
-    if (isBuy) return
     logger.info(
       `${
         isBuy ? chalk.white("[BUYING]") : chalk.white("[SELLING]")
