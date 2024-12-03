@@ -9,7 +9,7 @@ const fs = require("fs").promises;
 
 const session = axios.create({
   baseURL: "https://data.solanatracker.io/",
-  timeout: 3500,
+  timeout: 10000,
   headers: { "x-api-key": process.env.API_KEY },
 });
 
@@ -69,7 +69,7 @@ class TradingBot {
   }
 
   async initialize() {
-    this.keypair = Keypair.fromSecretKey(bs58.decode(this.privateKey));
+    this.keypair = Keypair.fromSecretKey(bs58.decode ? bs58.decode (this.privateKey): bs58.default.decode(this.privateKey));
     this.solanaTracker = new SolanaTracker(this.keypair, this.config.rpcUrl);
     await this.loadPositions();
     await this.loadSoldPositions();
@@ -428,13 +428,17 @@ class TradingBot {
   }
 
   async start() {
+    try {
     logger.info("Starting Trading Bot");
     await this.initialize();
 
     // Run buying and selling loops concurrently
     await Promise.allSettled([this.buyMonitor(), this.positionMonitor()]);
+    } catch (error) {
+      console.log("Error starting bot", error);
+    }
   }
 }
 
 const bot = new TradingBot();
-bot.start().catch((error) => logger.error("Error in bot execution", { error }));
+bot.start().catch((error) => console.error("Error in bot execution", error));
