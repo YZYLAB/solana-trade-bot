@@ -28,8 +28,8 @@ Includes two examples, one using HTTP requests and one using the more efficient 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YZYLAB/solana-trading-bot.git
-cd solana-trading-bot
+git clone https://github.com/YZYLAB/solana-trade-bot.git
+cd solana-trade-bot
 ```
 
 2. Install dependencies:
