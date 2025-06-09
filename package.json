@@ -9,9 +9,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@solana-tracker/data-api": "^0.0.5",
+    "bs58": "^6.0.0",
     "chalk": "4.1.0",
-    "dotenv": "^16.4.5",
-    "solana-swap": "^1.1.2",
-    "winston": "^3.13.1"
+    "dotenv": "^16.5.0",
+    "solana-swap": "^1.1.6",
+    "winston": "^3.17.0"
   }
 }

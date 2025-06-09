@@ -1,30 +1,36 @@
-# Solana Trading Bot
+# Solana Trading Bot (PoC)
 
-A high-performance, automated trading bot for Solana tokens using the Solana Tracker API.
-Supports Raydium (V4/CPMM), Pumpfun, Moonshot, Orca and Jupiter.
+A PoC of an automated trading bot for Solana tokens using the official [Solana Tracker Data API SDK](https://github.com/solanatracker/data-api-sdk) and Swap API. 
 
-Includes two examples, one using HTTP requests and one using the more efficient and faster Data Streams (Websockets) from Solana Tracker.
+It supports Raydium V4, Raydium CPMM, Raydium CLMM, Raydium Launchpad, Meteora Curve, Meteora Dynamic (v1 and v2), Meteora DLMM, Pumpfun, Pumpfun AMM, Moonshot, Orca, Boop and Jupiter.
+
+Includes two powerful trading modes:
+- **HTTP Mode**: Traditional polling-based approach using the Data API
+- **WebSocket Mode**: Real-time trading using Solana Tracker's Datastream for instant token discovery and price monitoring
 
 ![Screenshot of the Trading Bot](https://i.gyazo.com/afb12f6c358385f133fa4b95dba3c095.png)
 
-## Features
+## 🚀 Features
 
-- Automated buying and selling of Solana tokens
-- Multi-token support
-- Configurable trading parameters (liquidity, market cap, risk score)
-- Real-time position monitoring and management
-- Parallel execution of buying and selling operations
-- Detailed logging with timestamps and color-coded actions
-- Persistent storage of positions and transaction history
+- **Real-time Trading**: Instant token discovery and price monitoring via WebSocket
+- **Automated Trading**: Hands-free buying and selling based on configurable criteria
+- **Multi-DEX Support**: Trade on Raydium, Orca, Pumpfun, Moonshot, and more
+- **Advanced Filtering**: Filter tokens by liquidity, market cap, risk score, and social presence
+- **Position Management**: Real-time PnL tracking with automatic stop-loss and take-profit
+- **Parallel Execution**: Handle multiple trades simultaneously
+- **Comprehensive Logging**: Color-coded console output with detailed trade information
+- **Persistent Storage**: Maintains position history across restarts
+- **Rate Limit Handling**: Built-in rate limit management and retry logic
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Node.js (v14 or later recommended)
-- npm (comes with Node.js)
+- Node.js (v14 or later) or Bun JS (Preferred)
+- npm or yarn
 - A Solana wallet with SOL
-- API Key (Billing Token) from [Solana Tracker Data API](https://docs.solanatracker.io)
+- Solana Tracker API Key from [solanatracker.io](https://www.solanatracker.io/data-api)
+- WebSocket URL (for real-time mode) - Available with Premium plans or higher
 
-## Installation
+## 📦 Installation
 
 1. Clone the repository:
 ```bash
@@ -37,60 +43,188 @@ cd solana-trading-bot
 npm install
 ```
 
-3. Rename the .env.example and configure the bot.
-
-## Usage
-
-Run the bot with:
-
+Or using the official SDK directly:
 ```bash
-node index.js 
+npm install @solana-tracker/data-api
 ```
 
-Or
+3. Configure your environment:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
+## 🎮 Usage
+
+### HTTP Mode (Traditional Polling)
+```bash
+node index.js
+```
+
+### WebSocket Mode (Real-time) - Recommended
 ```bash
 node websocket.js
 ```
 
-## Configuration
+## ⚙️ Configuration
 
-Adjust the settings in your `.env` file to customize the bot's behavior:
+Configure the bot by editing your `.env` file:
 
-- AMOUNT: The amount of SOL to swap in each transaction
-- DELAY: Delay between buying cycles (in milliseconds)
-- MONITOR_INTERVAL: Interval for monitoring positions (in milliseconds)
-- SLIPPAGE: Maximum allowed slippage (in percentage)
-- PRIORITY_FEE: Priority fee for transactions
-- JITO: Set to "true" to use Jito for transaction processing
-- RPC_URL: Your Solana RPC URL
-- API_KEY: Your Solana Tracker - [Data API Key](https://www.solanatracker.io/data-api)
-- PRIVATE_KEY: Your wallet's private key
-- MIN_LIQUIDITY / MAX_LIQUIDITY: Liquidity range for token selection
-- MIN_MARKET_CAP / MAX_MARKET_CAP: Market cap range for token selection
-- MIN_RISK_SCORE / MAX_RISK_SCORE: Risk score range for token selection
-- REQUIRE_SOCIAL_DATA: Set to "true" to only trade tokens with social data
-- MAX_NEGATIVE_PNL / MAX_POSITIVE_PNL: PnL thresholds for selling positions
-- MARKETS: Comma-separated list of markets to trade on
+### Required Settings
+```env
+# API Credentials
+SOLANA_TRACKER_API_KEY=your_api_key_here
+SOLANA_TRACKER_WS_URL=your_websocket_url_here  # For WebSocket mode
 
-## API Usage and Fees
+# Wallet
+PRIVATE_KEY=your_wallet_private_key
+```
 
-This bot uses the Solana Tracker API. Please refer to [Solana Tracker's documentation](https://docs.solanatracker.io) for information about API usage and associated fees.
+### Trading Parameters
+```env
+# Trading Settings
+AMOUNT=0.01                    # Amount of SOL per trade
+SLIPPAGE=15                   # Maximum slippage percentage
+PRIORITY_FEE=0.00001          # Priority fee in SOL
+JITO=false                    # Enable Jito bundles
 
-## Disclaimer
+# Position Management
+MAX_POSITIONS=10              # Maximum concurrent positions
+MAX_NEGATIVE_PNL=-50         # Stop loss percentage
+MAX_POSITIVE_PNL=100         # Take profit percentage
+```
 
-This bot is for educational purposes only. Use at your own risk. Always understand the code you're running and the potential financial implications of automated trading.
+### Filter Settings
+```env
+# Token Filters
+MIN_LIQUIDITY=1000           # Minimum liquidity in USD
+MAX_LIQUIDITY=100000         # Maximum liquidity in USD
+MIN_MARKET_CAP=10000         # Minimum market cap in USD
+MAX_MARKET_CAP=1000000       # Maximum market cap in USD
+MIN_RISK_SCORE=0             # Minimum risk score (0-10)
+MAX_RISK_SCORE=7             # Maximum risk score (0-10)
+MIN_HOLDERS=10               # Minimum number of holders
+REQUIRE_SOCIAL_DATA=false    # Require social media presence
 
-The goal of this project is to show the potential ways of using the Solana Tracker API.
+# Markets to trade on (comma-separated)
+MARKETS=raydium,orca,pumpfun,moonshot,raydium-cpmm
+```
 
-## License
+### Advanced Settings
+```env
+# Monitoring Intervals
+DELAY=5000                   # Delay between scans (HTTP mode)
+MONITOR_INTERVAL=30000       # Position monitoring interval
+
+# Debugging
+DEBUG=true                   # Enable detailed logging
+
+# RPC Configuration
+RPC_URL=https://rpc-mainnet.solanatracker.io/?api_key=xxxx
+```
+
+## 📊 API Integration
+
+This bot uses the official [@solana-tracker/data-api](https://www.npmjs.com/package/@solana-tracker/data-api) SDK, providing:
+
+- Type-safe API calls with full TypeScript support
+- Built-in error handling and rate limit management
+- Automatic retries with exponential backoff
+- WebSocket support for real-time data streaming
+- Comprehensive token and wallet data access
+
+### SDK Features Used
+
+- **Real-time Datastream**: WebSocket connections for instant updates
+- **Token Discovery**: Latest tokens, trending tokens, and custom searches
+- **Price Monitoring**: Real-time price feeds and historical data
+- **Risk Analysis**: Built-in risk scoring and holder analytics
+- **Multi-token Support**: Batch operations for efficiency
+
+## 💡 Trading Modes Comparison
+
+| Feature | HTTP Mode | WebSocket Mode |
+|---------|-----------|----------------|
+| Token Discovery | 1-second polling | Real-time (instant) |
+| Price Updates | On-demand | Live streaming |
+| API Usage | Higher | Minimal |
+| Response Time | Seconds | Milliseconds |
+| Best For | Testing/Low-volume | Production trading |
+
+## 🔒 Security Considerations
+
+- Never share your private key or API credentials
+- Use a dedicated trading wallet with limited funds
+- Test with small amounts first
+- Monitor the bot regularly
+- Keep your dependencies updated
+
+## 📈 Performance Tips
+
+1. **Use WebSocket mode** for production trading
+2. **Adjust filters** based on market conditions
+3. **Monitor API usage** to stay within limits
+4. **Enable debug mode** to understand filtering decisions
+5. **Use multiple RPC endpoints** for redundancy
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**"No tokens found"**
+- Filters may be too restrictive
+- Enable `DEBUG=true` to see why tokens are filtered
+
+**"Rate limit exceeded"**
+- Upgrade your Solana Tracker plan
+- Increase delay between requests
+
+**"Transaction failed"**
+- Check wallet balance
+- Increase slippage
+- Try different RPC endpoint
+
+## 📚 Resources
+
+- [Solana Tracker Documentation](https://docs.solanatracker.io)
+- [Data API SDK GitHub](https://github.com/solanatracker/data-api-sdk)
+- [API Plans & Pricing](https://www.solanatracker.io/data-api)
+- [Support Discord](https://discord.gg/y38ZdJmBdT)
+
+## ⚠️ Disclaimer
+
+This bot is for educational purposes only. Cryptocurrency trading carries significant risk. Always:
+- Understand the code before running it
+- Start with small amounts
+- Never invest more than you can afford to lose
+- Do your own research
+
+## 📄 License
 
 [MIT License](LICENSE)
 
-## Contributing
+## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/YZYLAB/solana-trading-bot/issues).
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-## Support
+## ⭐ Support
 
-If you find this project helpful, please consider giving it a ⭐️ on GitHub!
+If you find this project helpful:
+- Give it a star on GitHub
+- Share it with others
+- Report issues and suggest features
+- Consider supporting the developers
+
+## 🔄 Recent Updates
+
+- **v2.0**: Migrated to official Solana Tracker Data API SDK 
+- **v1.0**: Initial release with HTTP polling and Datastream
+
+---
+
+Built using the [Solana Tracker Data API](https://www.solanatracker.io/data-api)
